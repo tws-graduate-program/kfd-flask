@@ -1,0 +1,26 @@
+name: Image Release
+
+on:
+  push:
+    # Publish `master` as Docker `latest` image.
+    branches:
+      - master
+
+    # Publish `v1.2.3` tags as releases.
+    tags:
+      - v*
+
+    paths:
+      - "src/**"
+      - "e2e_tests/**"
+      - "./.github/workflows/image*.yaml"
+  
+  workflow_dispatch:
+
+jobs:
+  build_push:
+    uses: ./.github/workflows/image.yaml
+    secrets: inherit
+    permissions:
+      packages: write
+      contents: read
