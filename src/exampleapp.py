@@ -92,10 +92,7 @@ def alive():
 
 @app.route('/ready')
 def ready():
-    parent_span = flask_tracer.get_span()
-    with opentracing.tracer.start_span('redis-ping', child_of=parent_span) as span:
-        result = redis_store.ping()
-        span.set_tag("redis-ping", result)
+    result = redis_store.ping()
     if result:
         return "Yes"
     else:
@@ -124,7 +121,7 @@ def pull_requests():
 if __name__ == '__main__':
     debug_enable = parser.getboolean('features', 'debug', fallback=False)
     redis_host = parser.get('features', 'db', fallback="localhost")
-    redis_store = redis.StrictRedis(host=redis_host, port=6379, db=0)
+    redis_store = redis.StrictRedis(host=redis_host, port=6379, db=0, socket_timeout=2, socket_connect_timeout=2)
     app.before_request(before_request)
     app.after_request(after_request)
     app.run(debug=debug_enable, host='0.0.0.0')
