@@ -96,6 +96,7 @@ def ready():
     if result:
         return "Yes"
     else:
+        app.logger.error(f"failed connect with db,  redis_host: {redis_host}, port: 6379" + filename)
         abort(500)
 
 @app.route('/metrics')
