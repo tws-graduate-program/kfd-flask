@@ -82,6 +82,7 @@ def activeconfig():
 @app.route('/hello')
 @app.route('/hello/<name>')
 def hello(name=None):
+    redis_store.incr('hello')
     return render_template('hello.html',
                            greeting=parser.get('features', 'greeting', fallback="Howdy"),
                            name=name)
@@ -118,6 +119,14 @@ def pull_requests():
         pull_request_titles = map(lambda item: item['title'], json)
 
     return 'PRs: ' + ', '.join(pull_request_titles)
+
+@app.route('/result')
+def result():
+    if redis_store.exists('hello'):
+        r = int(redis_store.get('hello'))
+    else:
+        r = 0
+    return f"The access page has been visited {r} times"
 
 if __name__ == '__main__':
     debug_enable = parser.getboolean('features', 'debug', fallback=False)
