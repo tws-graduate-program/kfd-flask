@@ -60,7 +60,7 @@ parser = SafeConfigParser(os.environ)
 config_file = Path(os.environ.get('CONFIG_FILE', './feature.flags'))
 # verify file exists before attempting to read and extend the configuration
 if config_file.is_file():
-    parser.read(os.environ.get('CONFIG_FILE'))
+    parser.read(config_file)
 
 redis_store = None
 app = Flask(__name__)
