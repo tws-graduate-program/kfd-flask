@@ -68,7 +68,10 @@ flask_tracer = FlaskTracer(initialize_tracer, True, app, ["url_rule"])
 
 @app.route('/')
 def index():
-    return "Index Page"
+    if version == 2:
+        return "Super fantastic Index Page"
+    else:
+        return "Index Page"
 
 @app.route('/activeconfig')
 def activeconfig():
@@ -134,4 +137,9 @@ if __name__ == '__main__':
     redis_store = redis.StrictRedis(host=redis_host, port=6379, db=0, socket_timeout=2, socket_connect_timeout=2)
     app.before_request(before_request)
     app.after_request(after_request)
+    version=1
+    print(sys.argv)
+    if len(sys.argv) > 1:
+        if sys.argv[1] == 'v2':
+            version = 2
     app.run(debug=debug_enable, host='0.0.0.0')
