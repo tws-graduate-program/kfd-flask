@@ -1,0 +1,4 @@
+[features]
+greeting=hello
+debug=True
+db=redis-service
