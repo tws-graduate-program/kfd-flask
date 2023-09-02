@@ -2,6 +2,33 @@
 
 A sample (and simple) Python/flask application for Kubernetes for Developers
 
+## Running
+
+```shell
+python exampleapp.py
+```
+
+### Parameters
+
+`python exampleapp.py [version]`
+
+- version
+    - v1, default.
+    - v2
+
+#### Configuration
+
+By default, will workdir `./feature.flags` as configuration file, you can also use `CONFIG_FILE` environment to overwrite path.
+
+Example config:
+```shell
+[features]
+greeting=hello
+debug=True
+db=redis-service
+db_pass=
+```
+
 ## to rebuild all the images
 
 (this may need to be done to resolve any underlying image issues, such
