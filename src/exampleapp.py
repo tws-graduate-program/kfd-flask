@@ -129,12 +129,15 @@ def result():
         r = int(redis_store.get('hello'))
     else:
         r = 0
-    return f"The access page has been visited {r} times"
+    return f"The hello endpoint has been visited {r} times"
 
 if __name__ == '__main__':
     debug_enable = parser.getboolean('features', 'debug', fallback=False)
     redis_host = parser.get('features', 'db', fallback="localhost")
-    redis_store = redis.StrictRedis(host=redis_host, port=6379, db=0, socket_timeout=2, socket_connect_timeout=2)
+    redis_pass = parser.get('features', 'db_pass', fallback=None)
+    redis_store = redis.StrictRedis(host=redis_host, password=redis_pass,
+        port=6379, db=0, socket_timeout=2,
+        socket_connect_timeout=2)
     app.before_request(before_request)
     app.after_request(after_request)
     version=1
